@@ -32,7 +32,7 @@ const tasks = new Listr([
   {
     title: 'creating .prettierrc',
     task: () => {
-      writeJSONSync('./prettierrc', {
+      writeJSONSync('./.prettierrc', {
         arrowParens: 'always',
         singleQuote: true
       })
@@ -59,7 +59,7 @@ const tasks = new Listr([
   {
     title: 'formatting existing codebase',
     task: () => execa('npm', ['run', 'format']),
-    skip: () => !argv.skipFormatting
+    skip: () => argv.skipFormatting
   }
 ])
 
