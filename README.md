@@ -14,7 +14,12 @@ When you are in an old codebase which needs to be pretty now, and stay pretty fo
 
 ```
 be-pretty
+  ✔ Installing prettier husky pretty-quick
+  ✔ copying custom .prettierrc
+  ✔ Updating package.json
+  ✔ formatting existing codebase
 ``
+Now you should have everything ready to just commit&push.
 
 if your codebase is already pretty, but needs help in the future you may skip formatting with a flag `--skipFormatting`
 ```
@@ -31,5 +36,5 @@ by default, be-pretty creates this prettier config.
 }
 ```
 
-if you want to customize this, just run `be-pretty setDefault "/path/to/your/defaultPrettierRc"`.
+if you want to customize this, just run `be-pretty setDefault -p="/path/to/your/defaultPrettierRc"`. You can omit the path if there is a prettierc file in the current working directory.
 be-pretty will use this as default from now on.

@@ -18,7 +18,7 @@
   "bin": "dist/be-pretty.js",
   "name": "be-pretty",
   "description": ":lipstick: adds prettier to an existing project with all bells and whistles-including husky, lint-staged",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "dist/be-pretty.ts",
   "directories": {
     "dist": "dist"
