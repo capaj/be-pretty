@@ -41,6 +41,20 @@ by default, be-pretty creates this prettier config.
 if you want to customize this, just run `be-pretty setDefault -p="/path/to/your/defaultPrettierRc"`. You can omit the path and if there is a prettierc file in the current working directory it will be used.
 be-pretty will use this as default from now on.
 
+## Format all
+
+if you just want to reformat everything, you can call `be-pretty formatAll`
+
+## All Commands
+
+```
+  be-pretty.ts setDefault  sets a .prettierrc file as your default, if ommited
+                           will look for the .prettierrc file in CWD[aliases: d]
+  be-pretty.ts formatAll   formats everything excluding node_modules[aliases: f]
+  be-pretty.ts run         run the series of commands to make a codebase pretty
+                                                                       [default]
+```
+
 ## FAQ
 
 ### Will this work for a newly added languages as well?

@@ -28,11 +28,27 @@ const getSupportedExtensions = (prettier: {
   return supportedExtensions
 }
 
+const formatAll = () => {
+  const prettier = require(path.resolve(
+    process.cwd(),
+    'node_modules/prettier/index.js'
+  ))
+  const allExtensionsComaSeparated = getSupportedExtensions(prettier)
+    .map((ext: string) => ext.substring(1))
+    .join(',')
+
+  return execa('npx', [
+    'prettier',
+    `{,!(node_modules)/**/}*.{${allExtensionsComaSeparated}}`,
+    '--write'
+  ])
+}
+
 const { argv } = yargs
   .alias('s', 'skipFormatting')
   .describe('s', 'pass when you do not want to format your code')
   .command(
-    'setDefault',
+    ['setDefault', 'd'],
     'sets a .prettierrc file as your default, if ommited will look for the .prettierrc file in CWD',
     {
       path: {
@@ -46,6 +62,12 @@ const { argv } = yargs
     }
   )
   .command(
+    ['formatAll', 'f'],
+    'formats everything excluding node_modules',
+    {},
+    formatAll
+  )
+  .command(
     ['run', '$0'],
     'run the series of commands to make a codebase pretty',
     {},
@@ -54,7 +76,7 @@ const { argv } = yargs
 
       const tasks = new Listr([
         {
-          title: 'Installing prettier husky lint-staged',
+          title: 'Installing prettier husky pretty-quick',
           task: () => {
             const hasYarnLock = existsSync('./yarn.lock')
 
@@ -111,24 +133,7 @@ const { argv } = yargs
         },
         {
           title: `formatting whole repo`,
-          task: () => {
-            const prettier = require(path.resolve(
-              process.cwd(),
-              'node_modules/prettier/index.js'
-            ))
-            const allExtensionsComaSeparated = getSupportedExtensions(prettier)
-              .map((ext: string) => ext.substring(1))
-              .join(',')
-            console.log(
-              'allExtensionsComaSeparated: ',
-              allExtensionsComaSeparated
-            )
-            return execa('npx', [
-              'prettier',
-              `{,!(node_modules)/**/}*.{$${allExtensionsComaSeparated}}`,
-              '--write'
-            ])
-          },
+          task: formatAll,
           skip: () => argv.skipFormatting
         }
       ])

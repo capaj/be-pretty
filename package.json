@@ -20,7 +20,7 @@
   "bin": "dist/be-pretty.js",
   "name": "be-pretty",
   "description": ":lipstick: adds prettier to an existing project with all bells and whistles-including husky, lint-staged",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "main": "dist/be-pretty.ts",
   "directories": {
     "lib": "src"
@@ -30,7 +30,9 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "prepublishOnly": "yarn build",
+    "cleanTests": "rm -rf fixtures",
+    "build": "tsc --pretty"
   },
   "repository": {
     "type": "git",
