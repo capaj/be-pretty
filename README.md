@@ -1,5 +1,7 @@
 # be-pretty
 
+![fabolous](https://media.giphy.com/media/XmiTYLQ5qXTqM/giphy.gif)
+
 :lipstick: adds prettier to an existing project with all bells and whistles-including husky, lint-staged
 
 ## Install
