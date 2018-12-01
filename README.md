@@ -2,7 +2,8 @@
 
 ![fabolous](https://media.giphy.com/media/XmiTYLQ5qXTqM/giphy.gif)
 
-:lipstick: adds prettier to an existing project with all bells and whistles-including husky, lint-staged
+:lipstick: adds prettier to an existing project with all bells and whistles-including husky and pretty-quick.
+Have you ever been bothered by all the steps you need to do in a legacy codebase to get prettier all set up? Well now you don't have to.
 
 ## Install
 
