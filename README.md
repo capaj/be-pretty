@@ -38,5 +38,11 @@ by default, be-pretty creates this prettier config.
 }
 ```
 
-if you want to customize this, just run `be-pretty setDefault -p="/path/to/your/defaultPrettierRc"`. You can omit the path if there is a prettierc file in the current working directory.
+if you want to customize this, just run `be-pretty setDefault -p="/path/to/your/defaultPrettierRc"`. You can omit the path and if there is a prettierc file in the current working directory it will be used.
 be-pretty will use this as default from now on.
+
+## FAQ
+
+### Will this work for a newly added languages as well?
+
+Yes, the list of supported file extensions is not hardcoded anywhere, it's taken from `prettier.getSupportInfo()` so it will always format all the files prettier supports.
