@@ -10,6 +10,8 @@
 npm i be-pretty -g
 ```
 
+Requires that you have npm/yarn and `npx` globally available
+
 ## Usage
 
 When you are in an old codebase which needs to be pretty now, and stay pretty forever and ever execute

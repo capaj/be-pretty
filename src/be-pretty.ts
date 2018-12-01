@@ -81,7 +81,13 @@ const { argv } = yargs
             const hasYarnLock = existsSync('./yarn.lock')
 
             if (hasYarnLock) {
-              return execa('yarn', ['add', '-D', 'prettier husky pretty-quick'])
+              return execa('yarn', [
+                'add',
+                '-D',
+                'prettier',
+                'husky',
+                'pretty-quick'
+              ])
             } else {
               return execa('npm', [
                 'install',
