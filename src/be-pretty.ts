@@ -11,7 +11,22 @@ import execa from 'execa'
 import Listr from 'listr'
 import yargs from 'yargs'
 import path from 'path'
+import lodashMerge from 'lodash.merge'
+
 const pathToDefaultPrettierrc = path.resolve(__dirname, '../.defaultPrettierrc')
+
+const getSupportedExtensions = (prettier: {
+  getSupportInfo: () => { languages: any[] }
+}) => {
+  const supportedExtensions = prettier
+    .getSupportInfo()
+    .languages.reduce(
+      (prev: string[], language: { extensions: string }) =>
+        prev.concat(language.extensions || []),
+      []
+    )
+  return supportedExtensions
+}
 
 const { argv } = yargs
   .alias('s', 'skipFormatting')
@@ -27,6 +42,7 @@ const { argv } = yargs
     },
     ({ path: prettierrcFilePath }) => {
       copyFileSync(prettierrcFilePath, pathToDefaultPrettierrc)
+      console.log(path.resolve(prettierrcFilePath), 'is now set as default')
     }
   )
   .command(
@@ -65,10 +81,14 @@ const { argv } = yargs
             if (hasCustomDefault) {
               copyFileSync(pathToDefaultPrettierrc, localPrettierrc)
             } else {
-              writeJSONSync(localPrettierrc, {
-                arrowParens: 'always',
-                singleQuote: true
-              })
+              writeJSONSync(
+                localPrettierrc,
+                {
+                  arrowParens: 'always',
+                  singleQuote: true
+                },
+                { spaces: 2 }
+              )
             }
           }
         },
@@ -76,15 +96,13 @@ const { argv } = yargs
           title: 'Updating package.json',
           task: async () => {
             const packageJSON = await readJSON('package.json')
-            packageJSON.husky = {
-              hooks: {
-                'pre-commit': 'pretty-quick --staged'
+            lodashMerge(packageJSON, {
+              husky: {
+                hooks: {
+                  'pre-commit': 'pretty-quick --staged'
+                }
               }
-            }
-            if (!packageJSON.scripts) {
-              packageJSON.scripts = {}
-            }
-            packageJSON.scripts.formatAll = `prettier "{,!(node_modules)/**/}*.{js,jsx,mjs,json,css,ts,tsx,sass,less,html}" --write`
+            })
 
             await writeJSON('package.json', packageJSON, {
               spaces: 2
@@ -92,8 +110,25 @@ const { argv } = yargs
           }
         },
         {
-          title: 'formatting existing codebase',
-          task: () => execa('npm', ['run', 'formatAll']),
+          title: `formatting whole repo`,
+          task: () => {
+            const prettier = require(path.resolve(
+              process.cwd(),
+              'node_modules/prettier/index.js'
+            ))
+            const allExtensionsComaSeparated = getSupportedExtensions(prettier)
+              .map((ext: string) => ext.substring(1))
+              .join(',')
+            console.log(
+              'allExtensionsComaSeparated: ',
+              allExtensionsComaSeparated
+            )
+            return execa('npx', [
+              'prettier',
+              `{,!(node_modules)/**/}*.{$${allExtensionsComaSeparated}}`,
+              '--write'
+            ])
+          },
           skip: () => argv.skipFormatting
         }
       ])
