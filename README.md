@@ -20,9 +20,9 @@ When you are in an old codebase which needs to be pretty now, and stay pretty fo
 ```
 be-pretty
   ✔ Installing prettier husky pretty-quick
-  ✔ copying custom .prettierrc
-  ✔ Updating package.json
-  ✔ formatting existing codebase
+  ✔ Copying custom .prettierrc
+  ✔ Adding pretty-quick pre-commit to package.json
+  ✔ Formatting whole repo
 ```
 
 Now you should have everything ready to just commit&push.

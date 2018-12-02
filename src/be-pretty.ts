@@ -101,8 +101,8 @@ const { argv } = yargs
         },
         {
           title: hasCustomDefault
-            ? 'copying custom .prettierrc'
-            : 'creating .prettierrc using the default',
+            ? 'Copying custom .prettierrc'
+            : 'Creating .prettierrc using the default .prettierrc',
           task: () => {
             const localPrettierrc = './.prettierrc'
 
@@ -121,7 +121,7 @@ const { argv } = yargs
           }
         },
         {
-          title: 'Updating package.json',
+          title: 'Adding pretty-quick pre-commit to package.json',
           task: async () => {
             const packageJSON = await readJSON('package.json')
             lodashMerge(packageJSON, {
@@ -138,7 +138,7 @@ const { argv } = yargs
           }
         },
         {
-          title: `formatting whole repo`,
+          title: `Formatting whole repo`,
           task: formatAll,
           skip: () => argv.skipFormatting
         }
