@@ -27,7 +27,7 @@ be-pretty
 
 Now you should have everything ready to just commit&push.
 
-if your codebase is already pretty, but needs help in the future you may skip formatting with a flag `--skipFormatting`
+You may skip formatting step with a flag `--skipFormatting`
 
 ## Customize .prettierrc
 
