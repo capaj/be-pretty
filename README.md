@@ -15,7 +15,7 @@ Requires that you have npm/yarn and `npx` globally available
 
 ## Usage
 
-When you are in an old codebase which needs to be pretty now, and stay pretty forever and ever execute
+When you are in an old codebase which needs to be pretty now, and stay pretty forever and ever execute `be-pretty`. An output looks like this:
 
 ```
 be-pretty
