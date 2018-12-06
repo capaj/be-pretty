@@ -11,7 +11,7 @@ Have you ever been bothered by all the steps you need to do in a legacy codebase
 npm i be-pretty -g
 ```
 
-Requires that you have npm/yarn and `npx` globally available
+Requires that you have npm/yarn and `npx` globally available. be pretty defaults to running npm, but if there is `yarn.lock` file it will use `yarn`.
 
 ## Usage
 
