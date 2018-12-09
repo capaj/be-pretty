@@ -35,9 +35,8 @@ by default, be-pretty creates this prettier config.
 
 ```js
 {
-  "semi": false,
-  "arrowParens": "always",
-  "singleQuote": true
+  "arrowParens": "always", // good for typescript/flow when you want to type your function arguments
+  "singleQuote": true // IMHO better readability
 }
 ```
 
