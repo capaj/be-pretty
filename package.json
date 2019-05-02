@@ -4,18 +4,18 @@
     "fs-extra": "^7.0.1",
     "listr": "^0.14.3",
     "lodash.merge": "^4.6.1",
-    "yargs": "^12.0.5"
+    "yargs": "^13.2.2"
   },
   "devDependencies": {
     "@types/execa": "^0.9.0",
-    "@types/fs-extra": "^5.0.4",
-    "@types/jest": "^23.3.10",
-    "@types/listr": "^0.13.0",
-    "@types/lodash.merge": "^4.6.4",
-    "@types/yargs": "^12.0.1",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.5",
-    "typescript": "^3.2.1"
+    "@types/fs-extra": "^5.0.5",
+    "@types/jest": "^24.0.12",
+    "@types/listr": "^0.14.0",
+    "@types/lodash.merge": "^4.6.6",
+    "@types/yargs": "^13.0.0",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.4.5"
   },
   "bin": "dist/be-pretty.js",
   "name": "be-pretty",

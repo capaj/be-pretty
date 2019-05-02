@@ -144,7 +144,7 @@ const { argv } = yargs
         }
       ])
 
-      tasks.run().catch((err) => {
+      tasks.run().catch((err: Error) => {
         throw err
       })
     }
