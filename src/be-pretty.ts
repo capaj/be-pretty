@@ -44,7 +44,7 @@ const formatAll = () => {
   ])
 }
 
-const { argv } = yargs
+export const parser = yargs
   .alias('s', 'skipFormatting')
   .describe('s', 'pass when you do not want to format your code')
   .command(
@@ -74,12 +74,11 @@ const { argv } = yargs
     () => {
       const hasCustomDefault = existsSync(pathToDefaultPrettierrc)
 
-      const tasks = new Listr([
+      const listrTasks: ReadonlyArray<Listr.ListrTask> = [
         {
           title: 'Installing prettier husky pretty-quick',
           task: () => {
             const hasYarnLock = existsSync('./yarn.lock')
-
             if (hasYarnLock) {
               return execa('yarn', [
                 'add',
@@ -105,7 +104,6 @@ const { argv } = yargs
             : 'Creating .prettierrc using the default .prettierrc',
           task: () => {
             const localPrettierrc = './.prettierrc'
-
             if (hasCustomDefault) {
               copyFileSync(pathToDefaultPrettierrc, localPrettierrc)
             } else {
@@ -131,7 +129,6 @@ const { argv } = yargs
                 }
               }
             })
-
             await writeJSON('package.json', packageJSON, {
               spaces: 2
             })
@@ -140,9 +137,10 @@ const { argv } = yargs
         {
           title: `Formatting whole repo`,
           task: formatAll,
-          skip: () => argv.skipFormatting
+          skip: () => Boolean(parser.argv.skipFormatting)
         }
-      ])
+      ]
+      const tasks = new Listr(listrTasks)
 
       tasks.run().catch((err: Error) => {
         throw err
