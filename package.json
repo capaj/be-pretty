@@ -12,6 +12,7 @@
     "@types/jest": "^24.0.25",
     "@types/listr": "^0.14.2",
     "@types/lodash.merge": "^4.6.6",
+    "@types/node": "^13.1.2",
     "@types/yargs": "^13.0.4",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
