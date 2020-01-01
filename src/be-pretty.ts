@@ -12,37 +12,9 @@ import Listr from 'listr'
 import yargs from 'yargs'
 import path from 'path'
 import lodashMerge from 'lodash.merge'
+import { formatAll } from './format-all'
 
 const pathToDefaultPrettierrc = path.resolve(__dirname, '../.defaultPrettierrc')
-
-const getSupportedExtensions = (prettier: {
-  getSupportInfo: () => { languages: any[] }
-}) => {
-  const supportedExtensions = prettier
-    .getSupportInfo()
-    .languages.reduce(
-      (prev: string[], language: { extensions: string }) =>
-        prev.concat(language.extensions || []),
-      []
-    )
-  return supportedExtensions
-}
-
-const formatAll = () => {
-  const prettier = require(path.resolve(
-    process.cwd(),
-    'node_modules/prettier/index.js'
-  ))
-  const allExtensionsComaSeparated = getSupportedExtensions(prettier)
-    .map((ext: string) => ext.substring(1))
-    .join(',')
-
-  return execa('npx', [
-    'prettier',
-    `{,!(node_modules)/**/}*.{${allExtensionsComaSeparated}}`,
-    '--write'
-  ])
-}
 
 export const parser = yargs
   .alias('s', 'skipFormatting')
