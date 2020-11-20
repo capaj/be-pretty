@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "execa": "^4.0.0",
     "fs-extra": "^8.1.0",
+    "execa": "^4.1.0",
     "listr": "^0.14.3",
     "lodash.merge": "^4.6.2",
     "yargs": "^15.0.2"
@@ -16,12 +16,12 @@
     "@types/yargs": "^13.0.4",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
-    "typescript": "^3.7.4"
+    "typescript": "^4.1.2"
   },
   "bin": "dist/be-pretty.js",
   "name": "be-pretty",
   "description": ":lipstick: adds prettier to an existing project with all bells and whistles-including husky, lint-staged",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "main": "dist/be-pretty.ts",
   "directories": {
     "lib": "src"

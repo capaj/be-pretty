@@ -23,9 +23,17 @@ export const formatAll = () => {
     .map((ext: string) => ext.substring(1))
     .join(',')
 
-  return execa('npx', [
-    'prettier',
-    `{,!(node_modules)/**/}*.{${allExtensionsComaSeparated}}`,
-    '--write'
-  ])
+  return execa(
+    'npx',
+    [
+      'prettier',
+      `{,!(node_modules)/**/}*.{${allExtensionsComaSeparated}}`,
+      '--write',
+    ],
+    {
+      env: {
+        NODE_OPTIONS: '--max_old_space_size=8192', // on large repos this becomes a problem
+      },
+    }
+  )
 }

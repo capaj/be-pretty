@@ -21,7 +21,7 @@ export const parser = yargs
   .describe('s', 'pass when you do not want to format your code')
   .command(
     ['setDefault', 'd'],
-    'sets a .prettierrc file as your default, if ommited will look for the .prettierrc file in CWD',
+    'sets a .prettierrc file as your default, if omitted will look for the .prettierrc file in CWD',
     {
       path: {
         alias: 'p',
