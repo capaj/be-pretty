@@ -1,4 +1,3 @@
-import path from 'path'
 import execa from 'execa'
 
 const getSupportedExtensions = (prettier: {
@@ -15,25 +14,16 @@ const getSupportedExtensions = (prettier: {
 }
 
 export const formatAll = () => {
-  const prettier = require(path.resolve(
-    process.cwd(),
-    'node_modules/prettier/index.js'
-  ))
-  const allExtensionsComaSeparated = getSupportedExtensions(prettier)
-    .map((ext: string) => ext.substring(1))
-    .join(',')
+  const prettier = require('prettier')
+  if (prettier.version[0] > 1) {
+    throw new Error(
+      `Only prettier 2 and up are supported, your version is ${prettier.version}`
+    )
+  }
 
-  return execa(
-    'npx',
-    [
-      'prettier',
-      `{,!(node_modules)/**/}*.{${allExtensionsComaSeparated}}`,
-      '--write',
-    ],
-    {
-      env: {
-        NODE_OPTIONS: '--max_old_space_size=8192', // on large repos this becomes a problem
-      },
+  return execa('npx', ['prettier', `.`, '--write'], {
+    env: {
+      NODE_OPTIONS: '--max_old_space_size=8192' // on large repos this becomes a problem
     }
-  )
+  })
 }

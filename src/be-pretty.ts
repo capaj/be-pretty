@@ -109,7 +109,9 @@ export const parser = yargs
         {
           title: `Formatting whole repo`,
           task: formatAll,
-          skip: () => Boolean(parser.argv.skipFormatting)
+          skip: () => {
+            return Boolean(parser.skipFormatting)
+          }
         }
       ]
       const tasks = new Listr(listrTasks)
@@ -119,4 +121,4 @@ export const parser = yargs
       })
     }
   )
-  .help()
+  .help().argv
