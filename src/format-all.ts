@@ -15,7 +15,7 @@ const getSupportedExtensions = (prettier: {
 
 export const formatAll = () => {
   const prettier = require('prettier')
-  if (prettier.version[0] > 1) {
+  if (prettier.version[0] < 2) {
     throw new Error(
       `Only prettier 2 and up are supported, your version is ${prettier.version}`
     )
