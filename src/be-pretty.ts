@@ -110,6 +110,7 @@ export const parser = yargs
           title: `Formatting whole repo`,
           task: formatAll,
           skip: () => {
+            // @ts-expect-error
             return Boolean(parser.skipFormatting)
           }
         }
