@@ -61,4 +61,4 @@ if you just want to reformat everything, you can call `be-pretty formatAll`
 
 ### Will this work for a newly added languages as well?
 
-Yes, the list of supported file extensions is not hardcoded anywhere, it's taken from `prettier.getSupportInfo()` so it will always format all the files prettier supports.
+Yes, the list of supported file extensions is not hardcoded anywhere-format all just invokes prettier in the current folder and let's it format all supported extensions.
