@@ -16,7 +16,10 @@ const getSupportedExtensions = (prettier: {
 export const formatAll = async () => {
   let prettier
   try {
-    prettier = require(path.join(process.cwd(), 'node_modules/prettier'))
+    prettier = require(path.join(
+      process.cwd(),
+      `node_modules${path.sep}prettier`
+    ))
   } catch (err) {
     console.warn(
       'Prettier not found in node_modules. Using global installed one.'
