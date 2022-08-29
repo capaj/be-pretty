@@ -16,6 +16,74 @@ import { formatAll } from './format-all'
 
 const pathToDefaultPrettierrc = path.resolve(__dirname, '../.defaultPrettierrc')
 
+export const listrTasks = () => {
+  const hasCustomDefault = existsSync(pathToDefaultPrettierrc)
+
+  const listrTasks: ReadonlyArray<Listr.ListrTask> = [
+    {
+      title: 'Installing prettier husky pretty-quick',
+      task: () => {
+        const hasYarnLock = existsSync('./yarn.lock')
+        const hasPnpmLock = existsSync('./pnpm-lock.yaml')
+        if (hasPnpmLock) {
+          return execa('pnpm', ['add', '-D', 'prettier'])
+        } else if (hasYarnLock) {
+          return execa('yarn', ['add', '-D', 'prettier'])
+        } else {
+          return execa('npm', ['install', '-D', 'prettier'])
+        }
+      }
+    },
+    {
+      title: hasCustomDefault
+        ? 'Copying custom .prettierrc'
+        : 'Creating .prettierrc using the default .prettierrc',
+      task: () => {
+        const localPrettierrc = './.prettierrc'
+        if (hasCustomDefault) {
+          copyFileSync(pathToDefaultPrettierrc, localPrettierrc)
+        } else {
+          writeJSONSync(
+            localPrettierrc,
+            {
+              arrowParens: 'always',
+              singleQuote: true
+            },
+            { spaces: 2 }
+          )
+        }
+      }
+    },
+    {
+      title: 'Adding lint-staged pre-commit to package.json',
+      task: async () => {
+        await execa('npx', ['mrm@2', 'lint-staged'])
+        const packageJSON = await readJSON('package.json')
+        lodashMerge(packageJSON, {
+          'lint-staged': {
+            '*': 'prettier --ignore-unknown --write'
+          }
+        })
+        await writeJSON('package.json', packageJSON, {
+          spaces: 2
+        })
+      }
+    },
+    {
+      title: `Formatting whole repo`,
+      task: formatAll,
+      skip: () => {
+        // @ts-expect-error
+        return Boolean(parser.skipFormatting)
+      }
+    }
+  ]
+  const tasks = new Listr(listrTasks)
+
+  tasks.run().catch((err: Error) => {
+    throw err
+  })
+}
 export const parser = yargs
   .alias('s', 'skipFormatting')
   .describe('s', 'pass when you do not want to format your code')
@@ -43,83 +111,6 @@ export const parser = yargs
     ['run', '$0'],
     'run the series of commands to make a codebase pretty',
     {},
-    () => {
-      const hasCustomDefault = existsSync(pathToDefaultPrettierrc)
-
-      const listrTasks: ReadonlyArray<Listr.ListrTask> = [
-        {
-          title: 'Installing prettier husky pretty-quick',
-          task: () => {
-            const hasYarnLock = existsSync('./yarn.lock')
-            if (hasYarnLock) {
-              return execa('yarn', [
-                'add',
-                '-D',
-                'prettier',
-                'husky',
-                'pretty-quick'
-              ])
-            } else {
-              return execa('npm', [
-                'install',
-                '-D',
-                'prettier',
-                'husky',
-                'pretty-quick'
-              ])
-            }
-          }
-        },
-        {
-          title: hasCustomDefault
-            ? 'Copying custom .prettierrc'
-            : 'Creating .prettierrc using the default .prettierrc',
-          task: () => {
-            const localPrettierrc = './.prettierrc'
-            if (hasCustomDefault) {
-              copyFileSync(pathToDefaultPrettierrc, localPrettierrc)
-            } else {
-              writeJSONSync(
-                localPrettierrc,
-                {
-                  arrowParens: 'always',
-                  singleQuote: true
-                },
-                { spaces: 2 }
-              )
-            }
-          }
-        },
-        {
-          title: 'Adding pretty-quick pre-commit to package.json',
-          task: async () => {
-            const packageJSON = await readJSON('package.json')
-            lodashMerge(packageJSON, {
-              husky: {
-                hooks: {
-                  'pre-commit': 'pretty-quick --staged'
-                }
-              }
-            })
-            await writeJSON('package.json', packageJSON, {
-              spaces: 2
-            })
-          }
-        },
-        {
-          title: `Formatting whole repo`,
-          task: formatAll,
-          skip: () => {
-            // @ts-expect-error
-            return Boolean(parser.skipFormatting)
-          }
-        }
-      ]
-      const tasks = new Listr(listrTasks)
-
-      tasks.run().catch((err: Error) => {
-        throw err
-      })
-    }
+    listrTasks
   )
   .help().argv
