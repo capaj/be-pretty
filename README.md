@@ -5,17 +5,9 @@
 :lipstick: adds prettier to an existing project with all bells and whistles-including husky and pretty-quick.
 Have you ever been bothered by all the steps you need to do in a legacy codebase to get prettier all set up? Well now you don't have to.
 
-## Install
-
-```
-npm i be-pretty -g
-```
-
-Requires that you have npm/yarn and `npx` globally available. be pretty defaults to running npm, but if there is `yarn.lock` file it will use `yarn`.
-
 ## Usage
 
-When you are in an old codebase which needs to be pretty now, and stay pretty forever and ever execute `be-pretty`. An output looks like this:
+When you are in an old codebase which needs to be pretty now, and stay pretty forever and ever execute `npx be-pretty`. An output looks like this:
 
 ```
 be-pretty
@@ -28,6 +20,14 @@ be-pretty
 Now you should have everything ready to just commit&push.
 
 You may skip formatting step with a flag `--skipFormatting`
+
+## Install(optional)
+
+```
+npm i be-pretty -g
+```
+
+Requires that you have npm/yarn and `npx` globally available. be pretty defaults to running npm, but if there is `yarn.lock` file it will use `yarn`.
 
 ## Customize .prettierrc
 
