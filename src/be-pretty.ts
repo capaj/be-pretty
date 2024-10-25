@@ -25,12 +25,22 @@ export const listrTasks = () => {
       task: () => {
         const hasYarnLock = existsSync('./yarn.lock')
         const hasPnpmLock = existsSync('./pnpm-lock.yaml')
+        const hasBunLock = existsSync('./bun.lockb')
+        const packageDependencies = [
+          'add',
+          '-D',
+          'prettier',
+          'husky',
+          'pretty-quick'
+        ]
         if (hasPnpmLock) {
-          return execa('pnpm', ['add', '-D', 'prettier'])
+          return execa('pnpm', packageDependencies)
         } else if (hasYarnLock) {
-          return execa('yarn', ['add', '-D', 'prettier'])
+          return execa('yarn', packageDependencies)
+        } else if (hasBunLock) {
+          return execa('bun', packageDependencies)
         } else {
-          return execa('npm', ['install', '-D', 'prettier'])
+          return execa('npm', packageDependencies)
         }
       }
     },
@@ -101,6 +111,9 @@ export const parser = yargs
       console.log(path.resolve(prettierrcFilePath), 'is now set as default')
     }
   )
+  .command(['version', 'v'], 'prints the version', {}, () => {
+    console.log(require('../package.json').version)
+  })
   .command(
     ['formatAll', 'f'],
     'formats everything excluding node_modules',
