@@ -7,7 +7,7 @@ Have you ever been bothered by all the steps you need to do in a legacy codebase
 
 ## Usage
 
-When you are in an old codebase which needs to be pretty now, and stay pretty forever and ever execute `npx be-pretty`. An output looks like this:
+When you are in an old codebase which needs to be pretty now, and stay pretty forever and ever execute `npx be-pretty`. An output should look like this:
 
 ```
 be-pretty
@@ -27,7 +27,7 @@ You may skip formatting step with a flag `--skipFormatting`
 npm i be-pretty -g
 ```
 
-Requires that you have npm/yarn and `npx` globally available. be pretty defaults to running npm, but if there is `yarn.lock` file it will use `yarn`.
+Requires that you have npm/yarn/pnpm/bun and `npx` globally available. be pretty defaults to running npm, but if there is `yarn.lock` file it will use `yarn`.
 
 ## Customize .prettierrc
 
