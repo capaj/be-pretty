@@ -1,4 +1,4 @@
-import execa from 'execa'
+import { execa } from 'execa'
 import path from 'path'
 const getSupportedExtensions = (prettier: {
   getSupportInfo: () => { languages: any[] }

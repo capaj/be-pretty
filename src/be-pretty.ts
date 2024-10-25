@@ -7,7 +7,7 @@ import {
   writeJSONSync,
   copyFileSync
 } from 'fs-extra'
-import execa from 'execa'
+import { execa } from 'execa'
 import Listr from 'listr'
 import yargs from 'yargs'
 import path from 'path'

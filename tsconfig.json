@@ -12,6 +12,7 @@
     "strict": true,
     "outDir": "./dist",
     "preserveConstEnums": true,
+    "skipLibCheck": true,
     "removeComments": true,
     "inlineSourceMap": true,
     "typeRoots": ["./node_modules/@types"]

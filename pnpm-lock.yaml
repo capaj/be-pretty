@@ -24,9 +24,6 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
     devDependencies:
-      '@types/execa':
-        specifier: ^2.0.0
-        version: 2.0.2
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -361,10 +358,6 @@ packages:
 
   '@types/babel__traverse@7.20.6':
     resolution: {integrity: sha512-r1bzfrm0tomOI8g1SzvCaQHo6Lcv6zu0EA+W2kHrt8dyrHQxGzBBL4kdkzIS+jBMV+EYcMAEAqXqYaLJq5rOZg==}
-
-  '@types/execa@2.0.2':
-    resolution: {integrity: sha512-8QSXFMO4F5rq03O94b/xRPBfseKGJYaBRv4zT/VE/OUU0PAuc21j4Ewvq7S18TT8GUoxGa+Y7sOtecCK9n0gkA==}
-    deprecated: This is a stub types definition. execa provides its own type definitions, so you do not need this installed.
 
   '@types/fs-extra@11.0.4':
     resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
@@ -1961,10 +1954,6 @@ snapshots:
   '@types/babel__traverse@7.20.6':
     dependencies:
       '@babel/types': 7.25.9
-
-  '@types/execa@2.0.2':
-    dependencies:
-      execa: 9.4.1
 
   '@types/fs-extra@11.0.4':
     dependencies:
