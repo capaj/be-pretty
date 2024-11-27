@@ -7,25 +7,14 @@ import {
   writeJSONSync,
   copyFileSync
 } from 'fs-extra'
-import { spawn } from 'child_process'
 import Listr from 'listr'
 import yargs from 'yargs'
 import path from 'path'
 import lodashMerge from 'lodash.merge'
 import { formatAll } from './format-all'
+import { executeCommand } from './executeCommand'
 
 const pathToDefaultPrettierrc = path.resolve(__dirname, '../.defaultPrettierrc')
-
-function executeCommand(command: string, args: string[]): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const child = spawn(command, args, { stdio: 'inherit' })
-    child.on('exit', (code) => {
-      if (code === 0) resolve()
-      else reject(new Error(`Command failed with exit code ${code}`))
-    })
-    child.on('error', reject)
-  })
-}
 
 export const listrTasks = () => {
   const hasCustomDefault = existsSync(pathToDefaultPrettierrc)

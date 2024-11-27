@@ -1,5 +1,5 @@
-import { execa } from 'execa'
 import path from 'path'
+import { executeCommand } from './executeCommand'
 const getSupportedExtensions = (prettier: {
   getSupportInfo: () => { languages: any[] }
 }) => {
@@ -32,10 +32,11 @@ export const formatAll = async () => {
     )
   }
 
-  const output = await execa('npx', ['prettier', `.`, '--write'], {
+  const output = await executeCommand('npx', ['prettier', `.`, '--write'], {
+    stdio: 'inherit',
     env: {
       NODE_OPTIONS: '--max_old_space_size=8192'
     }
   })
-  console.log(`Formatted ${output.stdout.split('\n').length} files.`)
+  console.log(`Formatted all files`)
 }
