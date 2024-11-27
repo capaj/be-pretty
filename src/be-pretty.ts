@@ -7,7 +7,7 @@ import {
   writeJSONSync,
   copyFileSync
 } from 'fs-extra'
-import { execa } from 'execa'
+import { spawn } from 'child_process'
 import Listr from 'listr'
 import yargs from 'yargs'
 import path from 'path'
@@ -15,6 +15,17 @@ import lodashMerge from 'lodash.merge'
 import { formatAll } from './format-all'
 
 const pathToDefaultPrettierrc = path.resolve(__dirname, '../.defaultPrettierrc')
+
+function executeCommand(command: string, args: string[]): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, { stdio: 'inherit' })
+    child.on('exit', (code) => {
+      if (code === 0) resolve()
+      else reject(new Error(`Command failed with exit code ${code}`))
+    })
+    child.on('error', reject)
+  })
+}
 
 export const listrTasks = () => {
   const hasCustomDefault = existsSync(pathToDefaultPrettierrc)
@@ -26,21 +37,19 @@ export const listrTasks = () => {
         const hasYarnLock = existsSync('./yarn.lock')
         const hasPnpmLock = existsSync('./pnpm-lock.yaml')
         const hasBunLock = existsSync('./bun.lockb')
-        const packageDependencies = [
-          'add',
-          '-D',
-          'prettier',
-          'husky',
-          'pretty-quick'
-        ]
+        const packageDependencies = ['prettier', 'husky', 'pretty-quick']
         if (hasPnpmLock) {
-          return execa('pnpm', packageDependencies)
+          return executeCommand('pnpm', ['add', '-D', ...packageDependencies])
         } else if (hasYarnLock) {
-          return execa('yarn', packageDependencies)
+          return executeCommand('yarn', ['add', '-D', ...packageDependencies])
         } else if (hasBunLock) {
-          return execa('bun', packageDependencies)
+          return executeCommand('bun', ['add', '-d', ...packageDependencies])
         } else {
-          return execa('npm', packageDependencies)
+          return executeCommand('npm', [
+            'install',
+            '--save-dev',
+            ...packageDependencies
+          ])
         }
       }
     },
@@ -67,7 +76,7 @@ export const listrTasks = () => {
     {
       title: 'Adding lint-staged pre-commit to package.json',
       task: async () => {
-        await execa('npx', ['mrm@2', 'lint-staged'])
+        await executeCommand('npx', ['mrm@2', 'lint-staged'])
         const packageJSON = await readJSON('package.json')
         lodashMerge(packageJSON, {
           'lint-staged': {
