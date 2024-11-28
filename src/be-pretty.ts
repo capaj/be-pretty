@@ -36,7 +36,7 @@ export const listrTasks = async () => {
             'add',
             '-D',
             ...packageDependencies,
-            isWorkspace ? '-W' : ''
+            isWorkspace ? '-w' : ''
           ])
         } else if (hasYarnLock) {
           return executeCommand('yarn', [
@@ -46,12 +46,7 @@ export const listrTasks = async () => {
             isWorkspace ? '-W' : ''
           ])
         } else if (hasBunLock) {
-          return executeCommand('bun', [
-            'add',
-            '-d',
-            ...packageDependencies,
-            isWorkspace ? '-W' : ''
-          ])
+          return executeCommand('bun', ['add', '-d', ...packageDependencies])
         } else {
           return executeCommand('npm', [
             'install',
