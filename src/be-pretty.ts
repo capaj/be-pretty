@@ -16,8 +16,9 @@ import { executeCommand } from './executeCommand'
 
 const pathToDefaultPrettierrc = path.resolve(__dirname, '../.defaultPrettierrc')
 
-export const listrTasks = () => {
+export const listrTasks = async () => {
   const hasCustomDefault = existsSync(pathToDefaultPrettierrc)
+  const packageJSON = await readJSON('package.json')
 
   const listrTasks: ReadonlyArray<Listr.ListrTask> = [
     {
@@ -26,18 +27,37 @@ export const listrTasks = () => {
         const hasYarnLock = existsSync('./yarn.lock')
         const hasPnpmLock = existsSync('./pnpm-lock.yaml')
         const hasBunLock = existsSync('./bun.lockb')
+        const isWorkspace =
+          existsSync('./pnpm-workspace.yaml') || packageJSON.workspaces
+
         const packageDependencies = ['prettier', 'husky', 'pretty-quick']
         if (hasPnpmLock) {
-          return executeCommand('pnpm', ['add', '-D', ...packageDependencies])
+          return executeCommand('pnpm', [
+            'add',
+            '-D',
+            ...packageDependencies,
+            isWorkspace ? '-W' : ''
+          ])
         } else if (hasYarnLock) {
-          return executeCommand('yarn', ['add', '-D', ...packageDependencies])
+          return executeCommand('yarn', [
+            'add',
+            '-D',
+            ...packageDependencies,
+            isWorkspace ? '-W' : ''
+          ])
         } else if (hasBunLock) {
-          return executeCommand('bun', ['add', '-d', ...packageDependencies])
+          return executeCommand('bun', [
+            'add',
+            '-d',
+            ...packageDependencies,
+            isWorkspace ? '-W' : ''
+          ])
         } else {
           return executeCommand('npm', [
             'install',
             '--save-dev',
-            ...packageDependencies
+            ...packageDependencies,
+            isWorkspace ? '-W' : ''
           ])
         }
       }
@@ -66,7 +86,6 @@ export const listrTasks = () => {
       title: 'Adding lint-staged pre-commit to package.json',
       task: async () => {
         await executeCommand('npx', ['mrm@2', 'lint-staged'])
-        const packageJSON = await readJSON('package.json')
         lodashMerge(packageJSON, {
           'lint-staged': {
             '*': 'prettier --ignore-unknown --write'
